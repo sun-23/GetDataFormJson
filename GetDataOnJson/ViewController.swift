@@ -38,7 +38,7 @@ class ViewController: UIViewController , UITableViewDelegate,UITableViewDataSour
     @IBAction func EnterButton(_ sender: Any) {
         
         let user = userTextField.text!
-        
+        getUserWhereUser(user: user)
         
     }
     func getUserWhereUser(user:String) -> Void {
