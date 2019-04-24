@@ -40,6 +40,7 @@ class ViewController: UIViewController , UITableViewDelegate,UITableViewDataSour
         let user = userTextField.text!
         getUserWhereUser(user: user)
         
+        
     }
     func getUserWhereUser(user:String) -> Void {
         
