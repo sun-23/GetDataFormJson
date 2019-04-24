@@ -39,8 +39,6 @@ class ViewController: UIViewController , UITableViewDelegate,UITableViewDataSour
         
         let user = userTextField.text!
         
-        getUserWhereUser(user: user)
-        
         
     }
     func getUserWhereUser(user:String) -> Void {
@@ -66,6 +64,13 @@ class ViewController: UIViewController , UITableViewDelegate,UITableViewDataSour
                 guard let jsonArray = jsonResponse as? [[String:String]] else{return}
                 
                 print("jsonArray ==> \(jsonArray)")
+                
+                let jsonDictionary:Dictionary = jsonArray[0]
+                
+                
+                let name:String = jsonDictionary["Name"] as! String
+                let user:String = jsonDictionary["User"] as! String
+                let password:String = jsonDictionary["Password"] as! String
                 
                 
             }catch let myError{
