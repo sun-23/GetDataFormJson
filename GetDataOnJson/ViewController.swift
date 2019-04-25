@@ -11,21 +11,40 @@ import UIKit
 class ViewController: UIViewController , UITableViewDelegate,UITableViewDataSource {
     
     
-    let aa = ["A","B","C"]
+    struct jsonStruct:Decodable{
+        
+        let Name:String
+        let User:String
+        let Password:String
+        
+    }
+    
+    
+    
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        return aa.count
+        return self.DataArray.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let Cell =  UITableViewCell(style: UITableViewCell.CellStyle.default, reuseIdentifier: "Cell")
-        Cell.textLabel?.text = aa[indexPath.row]
-        return Cell
+        let cell:TableViewCell = tableView.dequeueReusableCell(withIdentifier: "Cell")! as! TableViewCell // cell อ้างอิงจาก TableViewCell.swift
+        
+        // cell อ้างจาก label ใน TableViewCell.swift
+         cell.NameLabel.text = "Password = \(DataArray[indexPath.row].Password)"
+         cell.UserLabel.text = "Name = \(DataArray[indexPath.row].Name)"
+         cell.PasswordLabel.text = "User = \(DataArray[indexPath.row].User)"
+    
+        
+        return cell
         
     }
     
     
+    
+    @IBOutlet weak var tableView: UITableView!
+    
+    var DataArray = [jsonStruct]() // สร้างตัวแปร = struct
     
     @IBOutlet weak var userTextField: UITextField!
     
@@ -39,9 +58,10 @@ class ViewController: UIViewController , UITableViewDelegate,UITableViewDataSour
         
         let user = userTextField.text!
         getUserWhereUser(user: user)
-        
-        
+    
     }
+    
+    
     func getUserWhereUser(user:String) -> Void {
         
         let urlString:String = "https://www.androidthai.in.th/ssm/getUserWhereUserSun.php?isAdd=true&User=\(user)"
@@ -70,9 +90,34 @@ class ViewController: UIViewController , UITableViewDelegate,UITableViewDataSour
                 
                 
                 let name:String = jsonDictionary["Name"] as! String
-                let user:String = jsonDictionary["User"] as! String
+                let User:String = jsonDictionary["User"] as! String
                 let password:String = jsonDictionary["Password"] as! String
                 
+                let pName = "Name == " + name
+                let pUser = "User == " + User
+                let pPassword = "Password == " + password
+                
+                print(pName)
+                print(pUser)
+                print(pPassword)
+                
+                print(jsonDictionary)
+                
+                self.DataArray = try JSONDecoder().decode([jsonStruct].self,from: data!)// ตัวแปรเอาค่าจาก data ไปใส่ใน struct
+                
+                for jsonData in self.DataArray{
+                    
+                    DispatchQueue.main.async {
+                        self.tableView.reloadData()
+                        
+                    }
+                    print("\(jsonData.Name) : \(jsonData.User) : \(jsonData.Password)")
+                    
+                }
+                
+                print("name ==>> \(name)")
+                print("user ==>> \(User)")
+                print("password ==> \(password)")
                 
             }catch let myError{
                
@@ -88,6 +133,8 @@ class ViewController: UIViewController , UITableViewDelegate,UITableViewDataSour
         
         
     }
+    
+    
     
     func myAlert(titleString:String,messageString:String) -> Void {
         
