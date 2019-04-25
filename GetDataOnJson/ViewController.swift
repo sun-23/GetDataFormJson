@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController , UITableViewDelegate,UITableViewDataSource {
+class ViewController: UIViewController , UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate {
     
     
     struct jsonStruct:Decodable{
@@ -47,8 +47,13 @@ class ViewController: UIViewController , UITableViewDelegate,UITableViewDataSour
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.userTextField.delegate = self as! UITextFieldDelegate
         
         // Do any additional setup after loading the view.
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
     }
     
     @IBAction func EnterButton(_ sender: Any) {
